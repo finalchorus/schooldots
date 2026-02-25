@@ -2,23 +2,29 @@
 
 # Update apt and existing packages
 echo "[*] Updating packages and cleaning up.."
-sudo pacman -Syu 
+sudo apt update && sudo apt upgrade && sudo apt autoremove
 echo "[*] We up-to-date and clean now!"
 
 # Install required packages for the script
 echo "[*] Installing dependencies for this script (curl wget git)"
-sudo pacman -S curl
+sudo apt install curl
 sleep 1
-sudo pacman -S wget
+sudo apt install wget
 sleep 1
-sudo pacman -S git
+sudo apt install git
 sleep 1
 echo "[*] All done!"
 
 # Install zsh
 echo "[*] Installing zsh.."
-sudo pacman -S zsh
+sudo apt install zsh
 echo "[*] zsh installed!"
+
+# Install gnome-tweaks and themes
+echo "[*] Installing GNOME-tweaks.."
+sudo apt install gnome-tweaks
+sudo apt install gnome-themes-extra
+echo "[*] GNOME Tweaks installed!"
 
 
 # Create directory for and Install Terminator plugins
@@ -33,19 +39,14 @@ echo "[*] Installing oh-my-zsh"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 echo "[*] oh-my-zsh has been cloned!"
 
-# Install fast-syntax-highlighting & zsh-autocomplete from https://gist.github.com/n1snt/454b879b8f0b7995740ae04c5fb5b7df
-echo "[*] Installing zsh-autocomplete"
-git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
-
-# Don't forget to add them to the .zshrc under plugins******
-echo "[*] Don't forget to add the plugins in the field in .zshrc!"
-sleep 5
 
 # Install nerd-fonts "caskaydia"
 echo "[*] Installing Caskaydia-Nerd-Font"
-echo "[*] Caskaydia is #22"
-sleep 5
-sudo pacman -S nerdfonts
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/CascadiaCode.zip
+unzip CascadiaCode.zip
+mkdir /home/student/.fonts
+mv CaskaydiaCoveNerdFont* ~/.fonts
+fc-cache -fv
 echo "[*] Font is here!"
 
 # Install p10k zsh theme
@@ -59,6 +60,11 @@ echo "[*] Changing zsh theme to p10k"
 sed -i 's|robbyrussell|powerlevel10k\/powerlevel10k|1' $HOME/.zshrc
 echo "[*] zsh theme has become p10k"
 
+# Adding the syntax highlighting to zsh
+echo "[*] Activating syntax highlighting!"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+sed -i 's/^plugins=(git)$/plugins=(git zsh-syntax-highlighting)/' $HOME/.zshrc
+echo "[*] Syntax highlighting activated!"
 
 # Install Pokemon-colorscripts
 echo "[*] Installing Pokemon-colorscripts"
@@ -80,8 +86,8 @@ echo "[*] Sprites now added to terminals!"
 sleep 1
 
 # Adding customized bash prompt
-# echo "[*] Adding the PS1 line to .bashrc"
-# cat ps1 >> ~/.bashrc
-# export PS1="┌─[\[\e[1;34m\]\u\[\e[00m\]@\[\e[1;36m\]\h\[\e[00m\]:\[\e[1;35m\]\w\[\e[0m\]]\n└─╼"
+echo "[*] Adding the PS1 line to .bashrc"
+cat ./ps1 >> ~/.bashrc
+
 
 echo "[*] We're done now!"
