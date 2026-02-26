@@ -87,7 +87,6 @@ sleep 1
 
 # Adding customized bash prompt
 echo "[*] Adding the PS1 line to .bashrc"
-cat ./ps1 >> ~/.bashrc
-
+# export PS1="┌─[\[\e[1;34m\]\u\[\e[00m\]@\[\e[1;36m\]\h\[\e[00m\]:\[\e[1;35m\]\w\[\e[0m\]]\n└─╼"
 
 echo "[*] We're done now!"
